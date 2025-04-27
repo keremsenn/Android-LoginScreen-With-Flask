@@ -1,3 +1,5 @@
+from email.policy import default
+
 from app import db, ma
 
 class Users(db.Model):
@@ -8,8 +10,10 @@ class Users(db.Model):
     first_name = db.Column("UserName", db.String(40), nullable=False)
     last_name = db.Column("LastName", db.String(40), nullable=False)
     email = db.Column("Email", db.String(120),unique=True, nullable=False)
-    password = db.Column("PasswordHash", db.String(70), nullable=False)
-    is_active = db.Column("IsApproved", db.Boolean, nullable=False, default=True)
+    password = db.Column("PasswordHash", db.String(255), nullable=False)
+    win_count = db.Column("WinCount", db.Integer, nullable=False , default = 0)
+    match_count = db.Column("MatchCount", db.Integer, nullable=False , default = 0)
+    is_active = db.Column("IsActive", db.Boolean, nullable=False, default=True)
     created_at = db.Column("CreatedAt", db.DateTime, default=db.func.now(), nullable=False)
 
 class UsersSchema(ma.SQLAlchemyAutoSchema):
