@@ -39,7 +39,7 @@ venv/
 *.env
 
 # Alembic
-/alembic.ini    
+/alembic.ini
 
 # Database
 *.db
