@@ -39,7 +39,7 @@ venv/
 *.env
 
 # Alembic
-/alembic.ini    # Dikkat! Sadece dummy versiyonunu commit'leyin
+/alembic.ini    
 
 # Database
 *.db
