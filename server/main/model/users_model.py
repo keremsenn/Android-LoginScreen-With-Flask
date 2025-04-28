@@ -1,7 +1,7 @@
 from email.policy import default
-
+from sqlalchemy import event
 from app import db, ma
-
+from ..model.levels_model import Levels
 class Users(db.Model):
     __tablename__ = "users"
 
@@ -20,3 +20,7 @@ class UsersSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Users
         include_fk = True
+
+
+
+
