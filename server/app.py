@@ -5,6 +5,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 
 
+
 db = SQLAlchemy()
 migrate = Migrate()
 ma = Marshmallow()
@@ -18,7 +19,15 @@ db.init_app(app)
 ma.init_app(app)
 migrate.init_app(app, db)
 with app.app_context():
-    from main.model import users_model
+    from main.model import *
+
+from main.api.users_api import users_bp
+from main.api.levels_api import levels_bp
+from main.api.friends_api import friends_bp
+
+app.register_blueprint(users_bp, url_prefix="/users")
+app.register_blueprint(levels_bp, url_prefix="/levels")
+app.register_blueprint(friends_bp, url_prefix="/friends")
 
 
 
