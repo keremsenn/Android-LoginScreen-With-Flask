@@ -1,0 +1,41 @@
+from flask import request, jsonify
+from werkzeug.exceptions import NotFound
+from ..model.friends_model import  Friends,FriendsSchema
+from app import db
+
+
+class FriendsService:
+    @staticmethod
+    def send_friend_request(data):
+        users_id = data.get('users_id')
+        friend_id = data.get('friend_id')
+
+        # Zaten var mı kontrolü
+        existing = Friends.query.filter(
+            ((Friends.users_id == users_id) & (Friends.friend_id == friend_id)) |
+            ((Friends.users_id == friend_id) & (Friends.friend_id == users_id))
+        ).first()
+
+        if existing:
+            return {'error': 'Zaten bir arkadaşlık kaydı var.'}
+
+        new_request = Friends(users_id=users_id, friend_id=friend_id, status=False)
+        db.session.add(new_request)
+        db.session.commit()
+
+        # Burada obje dönemezsin, dict dön
+        return {'message': 'Arkadaşlık isteği gönderildi.', 'friendship_id': new_request.id}
+
+    @staticmethod
+    def update_is_status(data):
+        friends_query = Friends.query.filter_by(
+            users_id = data.get('users_id'),
+            friend_id = data.get('friend_id')
+        ).first()
+        if not friends_query:
+            return {"error": f"arakdaslık ıstegı bulunamadı"}
+        new_status = data.get('status')
+        friends_query.status = new_status
+        db.session.commit()
+
+        return {"message": f"yeni arkadaşlık durumunuz: {new_status}"}
