@@ -33,4 +33,26 @@ def get_by_nick_name():
     nick_name = request.args.get('nick_name')
     return jsonify(UsersService.get_by_nick_name(nick_name)) , 200
 
+@users_bp.route("/delete"  ,methods=['DELETE', 'GET'])
+def delete():
+    user_id = request.args.get('id')
+    return jsonify(UsersService.delete_by_user_id(user_id)) , 200
+
+@users_bp.route("/password_change", methods=['POST'])
+def password_change():
+    data = request.get_json()
+    result = UsersService.password_change(data)
+    if "hata" in result:
+        return jsonify(result), 400
+    return jsonify(result), 200
+
+@users_bp.route("/email_change", methods=['POST'])
+def email_change():
+    data = request.get_json()
+    result = UsersService.email_change(data)
+    if "hata" in result:
+        return jsonify(result), 400
+    return jsonify(result), 200
+
+
 

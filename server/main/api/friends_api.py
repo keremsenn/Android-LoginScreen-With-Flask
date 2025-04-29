@@ -19,5 +19,10 @@ def update_status():
         return jsonify(result), 404
     return jsonify(result), 200
 
+@friends_bp.route("/delete",methods=['DELETE','GET'])
+def delete_by_id():
+    id = request.args.get('id')
+    return jsonify(FriendsService.delete_by_id(id)) , 200
+
 
 

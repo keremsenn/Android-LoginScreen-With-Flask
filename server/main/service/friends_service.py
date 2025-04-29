@@ -33,9 +33,23 @@ class FriendsService:
             friend_id = data.get('friend_id')
         ).first()
         if not friends_query:
-            return {"error": f"arakdaslık ıstegı bulunamadı"}
+            return {"error": f"friendship request not found"}
         new_status = data.get('status')
         friends_query.status = new_status
         db.session.commit()
 
-        return {"message": f"yeni arkadaşlık durumunuz: {new_status}"}
+        return {"message": f"new friendship status: {new_status}"}
+
+    @staticmethod
+    def delete_by_id( id ):
+        friendship = Friends.query.filter_by(id=id).first()
+        if not friendship:
+            return {"error": f"User not found by id: {user_id}"}
+
+        try:
+            db.session.delete(friendship)
+            db.session.commit()
+            return {"message": "friendship deleted successfully"}
+        except Exception as e:
+            db.session.rollback()
+            return {"error": f"Deletion failed: {str(e)}"}
