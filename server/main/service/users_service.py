@@ -144,3 +144,26 @@ class UsersService:
         db.session.commit()
 
         return {"message": "Email address changed successfully"}
+
+    @staticmethod
+    def nick_name_change(data):
+        # Check required fields
+        if not all(k in data for k in ['user_id', 'new_nick_name', 'password']):
+            return {"error": "Missing information: user_id, new_nick_name and password are required"}
+
+        user = Users.query.filter_by(id=data['user_id']).first()
+        if not user:
+            return {"error": "User not found"}
+
+        # Verify password
+        if not argon2.verify(data['password'], user.password):
+            return {"error": "Password is incorrect"}
+
+        # Check if new email is already in use by another user
+        if Users.query.filter(Users.nick_name == data['new_nick_name'], Users.id != data['user_id']).first():
+            return {"error": "This nick name is already in use"}
+
+        user.nick_name = data['new_nick_name']
+        db.session.commit()
+
+        return {"message": "Nick Name  changed successfully"}

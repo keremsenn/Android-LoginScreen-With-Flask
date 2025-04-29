@@ -54,5 +54,13 @@ def email_change():
         return jsonify(result), 400
     return jsonify(result), 200
 
+@users_bp.route("/nick_name_change", methods=['POST'])
+def nick_name_change():
+    data = request.get_json()
+    result = UsersService.nick_name_change(data)
+    if "hata" in result:
+        return jsonify(result), 400
+    return jsonify(result), 200
+
 
 
