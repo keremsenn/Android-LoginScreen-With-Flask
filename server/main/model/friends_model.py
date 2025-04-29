@@ -6,8 +6,18 @@ class Friends(db.Model):
     __tablename__ = "friends"
 
     id = db.Column("Id", db.Integer, primary_key=True, autoincrement=True)
-    users_id = db.Column("UsersId", db.Integer, db.ForeignKey("users.UserID"), nullable=False)
-    friend_id = db.Column("FriendsId", db.Integer,db.ForeignKey("users.UserID"), nullable=False)
+    users_id = db.Column(
+        "UsersId",
+        db.Integer,
+        db.ForeignKey("users.UserID", ondelete="CASCADE"),
+        nullable=False
+    )
+    friend_id = db.Column(
+        "FriendsId",
+        db.Integer,
+        db.ForeignKey("users.UserID", ondelete="CASCADE"),
+        nullable=False
+    )
     status = db.Column("Status", db.Boolean, nullable=False, default=False)
     created_at = db.Column("CreatedAt", db.DateTime, default=db.func.now(), nullable=False)
 
