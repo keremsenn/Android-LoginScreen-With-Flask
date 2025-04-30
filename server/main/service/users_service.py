@@ -164,6 +164,10 @@ class UsersService:
             return {"error": "This nick name is already in use"}
 
         user.nick_name = data['new_nick_name']
+        level_record = Levels.query.filter_by(user_id=data['user_id']).first()
+        if level_record:
+            level_record.nick_name = data['new_nick_name']
+
         db.session.commit()
 
         return {"message": "Nick Name  changed successfully"}
