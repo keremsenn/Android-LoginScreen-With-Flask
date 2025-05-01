@@ -21,7 +21,7 @@ class Users(db.Model):
     # Friends ilişkileri (iki yönlü)
     friends_initiated = db.relationship(
         'Friends',
-        foreign_keys='Friends.users_id',
+        foreign_keys='Friends.user_id',
         backref='initiator',
         cascade='all, delete-orphan',
         passive_deletes=True

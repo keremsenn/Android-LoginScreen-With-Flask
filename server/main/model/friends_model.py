@@ -6,7 +6,7 @@ class Friends(db.Model):
     __tablename__ = "friends"
 
     id = db.Column("Id", db.Integer, primary_key=True, autoincrement=True)
-    users_id = db.Column(
+    user_id = db.Column(
         "UsersId",
         db.Integer,
         db.ForeignKey("users.UserID", ondelete="CASCADE"),
