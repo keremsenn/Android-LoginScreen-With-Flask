@@ -77,6 +77,13 @@ class UsersService:
         return users
 
     @staticmethod
+    def get_all():
+        users_query = Users.query.all()
+        schema = UsersSchema(many=True)
+        users = schema.dump(users_query)
+        return users
+
+    @staticmethod
     def get_by_nick_name(nick_name):
         users_query = Users.query.filter_by(nick_name=nick_name).first()
         schema = UsersSchema()

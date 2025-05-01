@@ -12,14 +12,14 @@ class FriendsService:
 
         # Zaten var mı kontrolü
         existing = Friends.query.filter(
-            ((Friends.users_id == users_id) & (Friends.friend_id == friend_id)) |
-            ((Friends.users_id == friend_id) & (Friends.friend_id == users_id))
+            (db.func.lower(Friends.user_id ) == users_id) &
+            (db.func.lower(Friends.friend_id) == friend_id)
         ).first()
 
         if existing:
             return {'error': 'Zaten bir arkadaşlık kaydı var.'}
 
-        new_request = Friends(users_id=users_id, friend_id=friend_id, status=False)
+        new_request = Friends(user_id=users_id, friend_id=friend_id, status=False)
         db.session.add(new_request)
         db.session.commit()
 
@@ -28,7 +28,7 @@ class FriendsService:
     @staticmethod
     def update_is_status(data):
         friends_query = Friends.query.filter_by(
-            users_id = data.get('users_id'),
+            user_id = data.get('users_id'),
             friend_id = data.get('friend_id')
         ).first()
         if not friends_query:
@@ -38,6 +38,18 @@ class FriendsService:
         db.session.commit()
 
         return {"message": f"new friendship status: {new_status}"}
+
+    @staticmethod
+    def get_by_user_id(data):
+        friends_query = Friends.query.filter_by(
+            user_id=data.get('users_id'),
+            status=data.get('status')
+        ).all()
+        schema = FriendsSchema(many =True)
+        friends = schema.dump(friends_query)
+        if not friends:
+            raise NotFound(f"Users with id {data.get('users_id')} not found")
+        return friends
 
     @staticmethod
     def delete_by_id( id ):
