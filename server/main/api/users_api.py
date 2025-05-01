@@ -28,6 +28,10 @@ def get_by_id():
     users_id = request.args.get('id')
     return jsonify(UsersService.get_by_id(users_id)) , 200
 
+@users_bp.route("/all")
+def get_all():
+    return jsonify(UsersService.get_all()), 200
+
 @users_bp.route("/nick_name")
 def get_by_nick_name():
     nick_name = request.args.get('nick_name')
