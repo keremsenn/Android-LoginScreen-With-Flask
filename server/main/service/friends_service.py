@@ -23,7 +23,6 @@ class FriendsService:
         db.session.add(new_request)
         db.session.commit()
 
-        # Burada obje dönemezsin, dict dön
         return {'message': 'Arkadaşlık isteği gönderildi.', 'friendship_id': new_request.id}
 
     @staticmethod
@@ -44,7 +43,7 @@ class FriendsService:
     def delete_by_id( id ):
         friendship = Friends.query.filter_by(id=id).first()
         if not friendship:
-            return {"error": f"User not found by id: {user_id}"}
+            return {"error": f"User not found by id: {id}"}
 
         try:
             db.session.delete(friendship)
