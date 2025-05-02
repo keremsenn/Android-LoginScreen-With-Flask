@@ -1,10 +1,13 @@
 package com.keremsen.wordmasters.api
 
+import com.keremsen.wordmasters.model.Friend
+import com.keremsen.wordmasters.model.FriendData
 import com.keremsen.wordmasters.model.RegisterRequest
 import com.keremsen.wordmasters.model.SendFriendship
 import com.keremsen.wordmasters.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -16,6 +19,10 @@ interface FriendApi {
     @POST("friends/update_status")
     suspend fun updateFriendStatus(@Body friendship: SendFriendship)
 
+
     @DELETE("friends/delete")
     suspend fun deleteFriend(@Query("id") id:Int)
+
+    @GET("friends/user_id")
+    suspend fun getByUserId(@Body friendData: FriendData) : List<Friend>
 }

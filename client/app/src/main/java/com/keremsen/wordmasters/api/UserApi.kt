@@ -17,19 +17,22 @@ interface UserApi {
     @POST("users/login")
     suspend fun  login(@Body loginRequest:LoginRequest) : User
 
-    @POST("user/register")
+    @POST("users/register")
     suspend fun register(@Body registerRequest: RegisterRequest)
 
-    @POST("user/update_is_active")
+    @POST("users/update_is_active")
     suspend fun updateIsActive(@Body user: User)
 
-    @GET("user/id")
+    @GET("users/id")
     suspend fun getById(@Query("id") id:Int) : User
 
-    @GET("user/nick_name")
+    @GET("users/all")
+    suspend fun getAll() : List<User>
+
+    @GET("users/nick_name")
     suspend fun getByNickName(@Query("nick_name") nickName:String) : User
 
-    @DELETE("user/delete")
+    @DELETE("users/delete")
     suspend fun deleteById(@Query("id") id: Int) : User
 
     @POST("users/password_change")
