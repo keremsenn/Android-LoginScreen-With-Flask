@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.App.starting" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:windowBackground">@color/splashBackground</item>
 
-    <style name="Theme.WordMasters" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- (Opsiyonel) Durum çubuğu rengi -->
+        <item name="android:statusBarColor">@android:color/darker_gray</item>
+    </style>
 </resources>

@@ -13,13 +13,13 @@ object RetrofitInstance {
             .build()
     }
     val userApi: UserApi by lazy {
-        retrofit.create(userApi::class.java)
+        retrofit.create(UserApi::class.java)
     }
     val levelApi: LevelApi by lazy {
-        retrofit.create(levelApi::class.java)
+        retrofit.create(LevelApi::class.java)
     }
 
     val friendApi:FriendApi by lazy{
-        retrofit.create(friendApi::class.java)
+        retrofit.create(FriendApi::class.java)
     }
 }
