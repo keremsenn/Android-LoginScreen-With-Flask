@@ -1,10 +1,12 @@
 package com.keremsen.wordmasters.api
 
+import retrofit2.Response
 import com.keremsen.wordmasters.model.EmailChange
 import com.keremsen.wordmasters.model.LoginRequest
 import com.keremsen.wordmasters.model.NickNameChange
 import com.keremsen.wordmasters.model.PasswordChange
 import com.keremsen.wordmasters.model.RegisterRequest
+import com.keremsen.wordmasters.model.RegisterResponse
 import com.keremsen.wordmasters.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -15,10 +17,10 @@ import retrofit2.http.Query
 interface UserApi {
 
     @POST("users/login")
-    suspend fun  login(@Body loginRequest:LoginRequest) : User
+    suspend fun  login(@Body loginRequest:LoginRequest) : Response<User?>
 
     @POST("users/register")
-    suspend fun register(@Body registerRequest: RegisterRequest)
+    suspend fun register(@Body registerRequest: RegisterRequest) : Response<RegisterResponse>
 
     @POST("users/update_is_active")
     suspend fun updateIsActive(@Body user: User)

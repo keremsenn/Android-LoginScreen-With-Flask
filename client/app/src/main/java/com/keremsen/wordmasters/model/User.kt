@@ -1,7 +1,7 @@
 package com.keremsen.wordmasters.model
 
 data class User(
-    val id: Int,
+    val id: String,
     val nickName: String,
     val firstName: String,
     val lastName: String,
