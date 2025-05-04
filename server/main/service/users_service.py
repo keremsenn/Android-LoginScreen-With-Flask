@@ -10,9 +10,15 @@ from passlib.hash import argon2
 class UsersService:
     @staticmethod
     def register(data):
+        if Users.query.filter_by(email=data["email"]).first():
+            return {"error": "Bu e-posta adresi zaten kayıtlı başka bir e-posta deneyin."}, 409
+
+        if Users.query.filter_by(nick_name=data['nickName']).first():
+            return {"error": "Bu kullanıcı adı zaten kullanılıyor başka bir kullanıcı adı deneyin."}, 400
+
         password = data.get('password')
         if len(password) < 7:
-            return {"error": "Password must be least 7 characters"}
+            return {"error": "Şifreniz en az 7 karakter olmalı!"},401
         hashed_password = argon2.hash(password)
 
         users = Users(
@@ -34,7 +40,7 @@ class UsersService:
         db.session.add(new_level)
         db.session.commit()
 
-        return {"message": "Register successful"}
+        return {"message": "Kayıt Başarılı."},201
 
 
 
@@ -46,12 +52,12 @@ class UsersService:
         user = Users.query.filter_by(email=email).first()
 
         if not user:
-            return {"error": "User not found by email"}
+            return {"error": "User not found by email"},400
 
         if argon2.verify(password, user.password):
-            return users_schema.dump(user)
+            return users_schema.dump(user),200
         else:
-            return {"error": "Invalid email or password"}
+            return {"error": "Invalid email or password"},409
 
     @staticmethod
     def update_is_active(data):

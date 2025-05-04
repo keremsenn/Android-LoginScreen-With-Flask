@@ -4,16 +4,18 @@ from ..service.users_service import UsersService
 users_bp = Blueprint("users_api", __name__)
 
 
-@users_bp.route("/register",methods=['POST'])
+@users_bp.route("/register", methods=['POST'])
 def register():
     data = request.get_json()
-    return jsonify(UsersService.register(data)), 200
+    result, status_code = UsersService.register(data)  # Tuple unpacking
+    return jsonify(result), status_code
 
 
 @users_bp.route("/login",methods=['POST','GET'])
 def login():
     data = request.get_json()
-    return jsonify(UsersService.login(data)), 200
+    result, status_code = UsersService.login(data)
+    return jsonify(result),status_code
 
 @users_bp.route("/update_is_active", methods=['POST'])
 def update_is_active():
