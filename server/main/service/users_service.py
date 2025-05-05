@@ -14,7 +14,7 @@ class UsersService:
             return {"error": "Bu e-posta adresi zaten kayıtlı başka bir e-posta deneyin."}, 409
 
         if Users.query.filter_by(nick_name=data['nickName']).first():
-            return {"error": "Bu kullanıcı adı zaten kullanılıyor başka bir kullanıcı adı deneyin."}, 400
+            return {"error": "Bu kullanıcı adı zaten kullanılıyor başka bir kullanıcı adı deneyin."}, 403
 
         password = data.get('password')
         if len(password) < 7:
@@ -113,74 +113,30 @@ class UsersService:
             return {"error": f"Deletion failed: {str(e)}"}
 
     @staticmethod
-    def password_change(data):
+    def update_account(data):
         # Check required fields
-        if not all(k in data for k in ['user_id', 'current_password', 'new_password']):
-            return {"error": "Missing information: user_id, current_password and new_password are required"}
+        if not all(k in data for k in ['user_id','new_email','new_nick_name', 'current_password','new_password']):
+            return {"error": "Missing information: user_id,new_email,new_nick_name, current_password and new_password are required"},400
 
         if len(data['new_password']) < 7:
-            return {"error": "New password must be at least 7 characters long"}
+            return {"error": "New password must be at least 7 characters long"},403
 
         user = Users.query.filter_by(id=data['user_id']).first()
         if not user:
-            return {"error": "User not found"}
+            return {"error": "User not found"},404
 
         # Verify current password
         if not argon2.verify(data['current_password'], user.password):
-            return {"error": "Current password is incorrect"}
+            return {"error": "Current password is incorrect"},401
 
         # Hash and save the new password
         user.password = argon2.hash(data['new_password'])
-        db.session.commit()
-
-        return {"message": "Password changed successfully"}
-
-    @staticmethod
-    def email_change(data):
-        # Check required fields
-        if not all(k in data for k in ['user_id', 'new_email', 'password']):
-            return {"error": "Missing information: user_id, new_email and password are required"}
-
-        user = Users.query.filter_by(id=data['user_id']).first()
-        if not user:
-            return {"error": "User not found"}
-
-        # Verify password
-        if not argon2.verify(data['password'], user.password):
-            return {"error": "Password is incorrect"}
-
-        # Check if new email is already in use by another user
-        if Users.query.filter(Users.email == data['new_email'], Users.id != data['user_id']).first():
-            return {"error": "This email address is already in use"}
-
         user.email = data['new_email']
-        db.session.commit()
-
-        return {"message": "Email address changed successfully"}
-
-    @staticmethod
-    def nick_name_change(data):
-        # Check required fields
-        if not all(k in data for k in ['user_id', 'new_nick_name', 'password']):
-            return {"error": "Missing information: user_id, new_nick_name and password are required"}
-
-        user = Users.query.filter_by(id=data['user_id']).first()
-        if not user:
-            return {"error": "User not found"}
-
-        # Verify password
-        if not argon2.verify(data['password'], user.password):
-            return {"error": "Password is incorrect"}
-
-        # Check if new email is already in use by another user
-        if Users.query.filter(Users.nick_name == data['new_nick_name'], Users.id != data['user_id']).first():
-            return {"error": "This nick name is already in use"}
-
         user.nick_name = data['new_nick_name']
         level_record = Levels.query.filter_by(user_id=data['user_id']).first()
         if level_record:
             level_record.nick_name = data['new_nick_name']
-
         db.session.commit()
 
-        return {"message": "Nick Name  changed successfully"}
+        return {"message": "Data s changed successfully"},200
+

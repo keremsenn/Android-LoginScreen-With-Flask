@@ -44,13 +44,11 @@ def delete():
     user_id = request.args.get('id')
     return jsonify(UsersService.delete_by_user_id(user_id)) , 200
 
-@users_bp.route("/password_change", methods=['POST'])
-def password_change():
+@users_bp.route("/update_account", methods=['PATCH'])
+def update_account():
     data = request.get_json()
-    result = UsersService.password_change(data)
-    if "hata" in result:
-        return jsonify(result), 400
-    return jsonify(result), 200
+    result ,status_code= UsersService.update_account(data)
+    return jsonify(result), status_code
 
 @users_bp.route("/email_change", methods=['POST'])
 def email_change():
