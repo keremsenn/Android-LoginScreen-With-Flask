@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.serialization") version "2.1.20"
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+
 }
 
 android {
@@ -19,6 +20,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"your local host\"")
+
     }
 
     buildTypes {
@@ -46,31 +49,22 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-
-
     // Jetpack Compose integration
     implementation(libs.androidx.navigation.compose)
-
     // Views/Fragments integration
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
     // Feature module support for Fragments
     implementation(libs.androidx.navigation.dynamic.features.fragment)
-
     // Testing Navigation
     androidTestImplementation(libs.androidx.navigation.testing)
-
     // JSON serialization library
     implementation(libs.kotlinx.serialization.json)
-
     // Hilt core
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-
     // Hilt - Jetpack Compose integration
     implementation(libs.androidx.hilt.navigation.compose)
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

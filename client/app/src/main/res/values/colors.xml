@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="splashText">#070707</color>
+    <color name="splashBackground">#EDA946</color>
+    <color name="TextColor">#EFAA46</color>
+    <color name="ButtonColor">#FFEFCF</color>
+    <color name="ButtonColor2">#303330</color>
+    <color name="anather">#F02C2C</color>
 </resources>

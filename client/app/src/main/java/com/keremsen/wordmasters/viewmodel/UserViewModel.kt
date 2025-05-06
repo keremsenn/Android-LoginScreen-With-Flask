@@ -2,10 +2,8 @@ package com.keremsen.wordmasters.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.keremsen.wordmasters.model.EmailChange
 import com.keremsen.wordmasters.model.LoginRequest
-import com.keremsen.wordmasters.model.NickNameChange
-import com.keremsen.wordmasters.model.PasswordChange
+import com.keremsen.wordmasters.model.UpdateAccount
 import com.keremsen.wordmasters.model.RegisterRequest
 import com.keremsen.wordmasters.model.User
 import com.keremsen.wordmasters.repository.UserRepository
@@ -26,10 +24,20 @@ class UserViewModel @Inject constructor(
     private val _userList = MutableStateFlow<List<User>>(emptyList())
     val userList : StateFlow<List<User>> = _userList
 
+    private val _responseCode = MutableStateFlow(0)
+    val responseCode: StateFlow<Int> = _responseCode
+
+    private val _responseCode2 = MutableStateFlow(0)
+    val responseCode2: StateFlow<Int> = _responseCode2
+
     fun  login(loginRequest: LoginRequest) {
         viewModelScope.launch {
             try {
-                    _user.value = userRepository.login(loginRequest)
+                val response = userRepository.login(loginRequest)
+                _responseCode2.value = response.code()
+                if (response.isSuccessful) {
+                    _user.value = response.body()
+                }
             }catch (e:Exception){
                 e.printStackTrace()
             }
@@ -39,8 +47,10 @@ class UserViewModel @Inject constructor(
     fun register(registerRequest: RegisterRequest) {
         viewModelScope.launch {
             try {
-                userRepository.register(registerRequest)
-            }catch (e:Exception){
+                val response = userRepository.register(registerRequest)
+                _responseCode.value = response.code()
+
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -90,28 +100,10 @@ class UserViewModel @Inject constructor(
             }
         }
     }
-    fun passwordChange( passwordChange: PasswordChange) {
+    fun passwordChange(updateAccount: UpdateAccount) {
         viewModelScope.launch {
             try {
-                userRepository.passwordChange(passwordChange)
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
-    }
-    fun emailChange( emailChange: EmailChange) {
-        viewModelScope.launch {
-            try {
-                userRepository.emailChange(emailChange)
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
-    }
-    fun nickNameChange( nickNameChange: NickNameChange) {
-        viewModelScope.launch {
-            try {
-                userRepository.nickNameChange(nickNameChange)
+                userRepository.updateAccount(updateAccount)
             }catch (e:Exception){
                 e.printStackTrace()
             }
