@@ -1,2 +1,2 @@
-# WordMasters-Android
- Multiplayer word battle game with Kotlin (Android) + Flask backend.
+# Android-LoginScreen-With-Flask
+ Kotlin (Android) LoginScreen(Jetpack Compose) with a Flask Backend
